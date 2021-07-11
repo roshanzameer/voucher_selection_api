@@ -10,8 +10,8 @@ services:
         - '32271:5432'
       environment:
         POSTGRES_PASSWORD: airflow
-      volumes:
-        - ./pgsql_data:/var/lib/postgresql/data
+#      volumes:
+#        - ./pgsql_data:/var/lib/postgresql/data
 
 
     airflow:
@@ -38,3 +38,13 @@ services:
             retries: 3
 
 
+    app:
+        container_name: rest_api
+        build: ./app
+        ports:
+            - '8000:8000'
+        links:
+            - postgres_db
+        restart: always
+        depends_on:
+            - postgres_db
