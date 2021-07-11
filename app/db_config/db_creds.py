@@ -1,10 +1,9 @@
 LOCAL = {
     'user': "postgres",
-    'password': "admin@123",
-    'host': "172.16.238.10",
-    'port': "5432",
+    'password': "airflow",
+    'host': "localhost",
+    'port': "32271",
     'options': '',
-    'database': "voucher"
+    'database': "postgres"
 }
 
-table_config = {'demand': 'demand', 'supply': 'supply'}

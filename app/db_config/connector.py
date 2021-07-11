@@ -1,11 +1,10 @@
 import os
 import atexit
 import psycopg2
-from db_creds import LOCAL, table_config
+from db_config.db_creds import LOCAL
 import logging
 log = logging.getLogger(__name__)
 
-ENV = os.environ['ENV']
 
 connection = None
 cursor = None
@@ -20,21 +19,14 @@ class PgConnector:
         :return: Connection Sting: Object
         """
 
-        if ENV == 'docker':
-            host = os.environ['HOST']
-            port = os.environ['PORT']
-            username = os.environ['USERNAME']
-            password = os.environ['PASSWORD']
-            database = os.environ['DATABASE']
-            options = os.environ['OPTIONS']
-
-            connection = psycopg2.connect(user=username,
-                                          password=password,
-                                          host=host,
-                                          port=port,
-                                          options=options,
-                                          database=database)
-            return connection
+        connection = psycopg2.connect(user='postgres',
+                                      password='airflow',
+                                      host='host.docker.internal',
+                                      port=32271,
+                                      options='',
+                                      database='postgres')
+        print(connection)
+        return connection
 
 
 def get_connection():

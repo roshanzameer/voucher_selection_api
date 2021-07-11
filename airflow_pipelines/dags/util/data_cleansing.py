@@ -38,7 +38,7 @@ def clean_data(df):
         traceback.print_exc()
 
 
-def transform_load(parquet_file):
+def transform_load(parquet_file, clean_csv):
     dataframe = parquet_to_df(parquet_file)
     df = clean_data(dataframe)
     from airflow.hooks.postgres_hook import PostgresHook
@@ -52,8 +52,9 @@ def transform_load(parquet_file):
               con=hook.get_sqlalchemy_engine(),
               schema='public'
               )
+    df.to_csv(clean_csv)
     logger.info('Data has been written to the DB')
 
 
 if __name__ == '__main__':
-    transform_load('../../../data/data.parquet.gzip')
+    pass
