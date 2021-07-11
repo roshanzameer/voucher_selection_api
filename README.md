@@ -18,3 +18,20 @@ All the pipelines/frameworks/tools that were needed to build the system have bee
 * Flask API: The Flask REST API is containerised also.
 
 
+### Deployment
+
+* The service, no matter how scalable they can be, are subtely linked with each other. The deployment is very straight forward owing to Docker Compose.
+* The *docker compose up* command spawn the 3 containers. 
+              
+`docker compose up`
+              
+* The containers are loaded in the order of the dependecies. 
+* On loading, the Apache Airflow container build its meta Database. (SQLit currently)
+* Once the services are loaded, the pipeline can be visited from here: [localhost:8080](http://localhost:8080)
+* Once the Airflow UI is accessible, the Dag Voucher_Select is to be triggered by switching it on.
+
+              
+           
+
+
+
