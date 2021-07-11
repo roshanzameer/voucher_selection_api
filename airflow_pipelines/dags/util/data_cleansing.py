@@ -42,7 +42,7 @@ def transform_load(parquet_file):
     dataframe = parquet_to_df(parquet_file)
     df = clean_data(dataframe)
     from airflow.hooks.postgres_hook import PostgresHook
-    hook = PostgresHook('postgres_default')
+    hook = PostgresHook('postgres_db')
     hook.autocommit = True
     df.to_sql(name='vouchers',
               index=False,

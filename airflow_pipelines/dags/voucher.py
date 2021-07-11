@@ -1,3 +1,4 @@
+import os
 from airflow import DAG
 from airflow.operators.bash_operator import BashOperator
 from airflow.operators.python_operator import PythonOperator
@@ -25,11 +26,16 @@ default_args = {
 
 dag = DAG('Voucher_Select', default_args=default_args)
 
-# Create Table if not present
+
+# The exported postgres conn_id  is not getting added. Hence doing it via bashoperator
+create_conn = BashOperator(
+    task_id='create_db_conn',
+    bash_command=f"airflow connections -a --conn_id postgres_db --conn_uri {os.getenv('AIRFLOW_CONN_POSTGRES_DB')}",
+    dag=dag)
 
 create_db = PostgresOperator(
     task_id='create_db',
-    postgres_conn_id='postgres_default',
+    postgres_conn_id='postgres_db',
     dag=dag,
     sql=VOUCHER_SQL)
 
@@ -57,4 +63,4 @@ dummy = DummyOperator(
     dag=dag)
 
 
-create_db >> extract_data >> data_cleansing >> dummy
+create_conn >> create_db >> extract_data >> data_cleansing >> dummy
