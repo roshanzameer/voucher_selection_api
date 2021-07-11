@@ -1,0 +1,39 @@
+
+version: '2.1'
+
+services:
+
+    postgres:
+      container_name: postgres
+      image: postgres
+      ports:
+        - '32271:5432'
+      environment:
+        POSTGRES_PASSWORD: airflow
+#      volumes:
+#        - ./pgsql_data:/var/lib/postgresql/data
+
+
+    airflow:
+        container_name: airflow
+        image: rossi619/airflow:1.0.0
+        ports:
+          - '8080:8080'
+        links:
+          - postgres
+        restart: always
+        depends_on:
+            - postgres
+        environment:
+            - LOAD_EX=n
+            - FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
+        volumes:
+            - ./airflow_pipelines/dags:/usr/local/airflow/dags
+            - ./airflow_pipelines/airflow.db:/usr/local/airflow/airflow.db
+        command: airflow connections --add --conn_id POSTGRES_DB --conn_type postgres --conn_host postgres --conn_password airflow --conn_port 5432 --conn_schema postgres
+
+        healthcheck:
+            test: ["CMD-SHELL", "[ -f /usr/local/airflow/airflow-webserver.pid ]"]
+            interval: 30s
+            timeout: 30s
+            retries: 3
