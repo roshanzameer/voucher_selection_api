@@ -20,6 +20,8 @@ All the pipelines/frameworks/tools that were needed to build the system have bee
 
 ### Deployment
 
+#### Pipeline
+
 * The service, no matter how scalable they can be, are subtely linked with each other. The deployment is very straight forward owing to Docker Compose.
 * The *docker compose up* command spawn the 3 containers. 
               
@@ -30,7 +32,28 @@ All the pipelines/frameworks/tools that were needed to build the system have bee
 * Once the services are loaded, the pipeline can be visited from here: [localhost:8080](http://localhost:8080)
 * Once the Airflow UI is accessible, the Dag Voucher_Select is to be triggered by switching it on.
 
-              
+#### REST API
+* The Docker-Compose script also spins up a Container which runs the Flask based REST API
+* The API exposes a POST /voucher endpoint on the 8000 port, which returns the Voucher amount.
+* A sample Curl request is shown below.
+
+       curl --location --request POST 'localhost:8000/voucher' \
+            --header 'Content-Type: application/json' \
+            --data-raw '{
+               "customer_id": 123,
+               "country_code": "Peru",
+               "last_order_ts": "2018-05-03 00:00:00",
+               "first_order_ts": "2017-05-03 00:00:00",
+               "total_orders": 3,
+               "segment_name": "frequent_segment"
+               }'
+* Sample Response
+              `{
+                  "voucher_amount": 2640
+              }`      
+             
+
+
            
 
 
