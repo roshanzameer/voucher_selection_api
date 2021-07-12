@@ -28,7 +28,7 @@ All the pipelines/frameworks/tools that were needed to build the system have bee
 `docker compose up`
               
 * The containers are loaded in the order of the dependecies. 
-* On loading, the Apache Airflow container build its meta Database. (SQLit currently)
+* On loading, the Apache Airflow container build its meta Database. (SQLite currently)
 * Once the services are loaded, the pipeline can be visited from here: [localhost:8080](http://localhost:8080)
 * Once the Airflow UI is accessible, the Dag Voucher_Select is to be triggered by switching it on.
 
